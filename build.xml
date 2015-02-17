@@ -20,7 +20,7 @@
 
   <target name="war" depends="clean">
     <exec executable="${sbt.exec}" resolveexecutable="true" failonerror="true">
-      <arg line="clean compile test package" />
+      <arg line="clean compile package" />
     </exec>
   </target>
 
@@ -37,6 +37,7 @@
     <unzip dest="${embed.classes.dir}" src="${jetty.dir}/jetty-util-${jetty.version}.jar" />
     <unzip dest="${embed.classes.dir}" src="${jetty.dir}/jetty-webapp-${jetty.version}.jar" />
     <unzip dest="${embed.classes.dir}" src="${jetty.dir}/jetty-xml-${jetty.version}.jar" />
+    <unzip dest="${embed.classes.dir}" src="${jetty.dir}/jetty-websocket-${jetty.version}.jar" />
 
     <zip destfile="${target.dir}/scala-${scala.version}/gitbucket_${scala.version}-${gitbucket.version}.war"
          basedir="${embed.classes.dir}"

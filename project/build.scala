@@ -27,6 +27,8 @@ object MyBuild extends Build {
       Classpaths.typesafeReleases,
       "amateras-repo" at "http://amateras.sourceforge.jp/mvn/"
     ),
+      classpathTypes ~= (_ + "orbit"),
+    resolvers += "Akka Repo" at "http://repo.akka.io/repository",
     scalacOptions := Seq("-deprecation", "-language:postfixOps"),
     libraryDependencies ++= Seq(
       "org.eclipse.jgit" % "org.eclipse.jgit.http.server" % "3.4.1.201406201815-r",
@@ -34,6 +36,7 @@ object MyBuild extends Build {
       "org.scalatra" %% "scalatra" % ScalatraVersion,
       "org.scalatra" %% "scalatra-specs2" % ScalatraVersion % "test",
       "org.scalatra" %% "scalatra-json" % ScalatraVersion,
+      "org.scalatra" %% "scalatra-atmosphere" % ScalatraVersion,
       "org.json4s" %% "json4s-jackson" % "3.2.10",
       "jp.sf.amateras" %% "scalatra-forms" % "0.1.0",
       "commons-io" % "commons-io" % "2.4",
@@ -47,6 +50,7 @@ object MyBuild extends Build {
       "com.h2database" % "h2" % "1.4.180",
       "ch.qos.logback" % "logback-classic" % "1.0.13" % "runtime",
       "org.eclipse.jetty" % "jetty-webapp" % "8.1.8.v20121106" % "container;provided",
+      "org.eclipse.jetty" % "jetty-websocket" % "8.1.8.v20121106",
       "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container;provided;test" artifacts Artifact("javax.servlet", "jar", "jar"),
       "junit" % "junit" % "4.11" % "test",
       "com.mchange" % "c3p0" % "0.9.5",

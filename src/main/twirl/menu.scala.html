@@ -74,6 +74,7 @@
       @sidemenu("/issues", "issues", "Issues", repository.issueCount)
       @sidemenu("/pulls" , "pulls" , "Pull Requests", repository.pullCount)
       @sidemenu("/wiki"  , "wiki"  , "Wiki")
+      @sidemenu("/chatroom", "chat", "Chat")
       @if(loginAccount.isDefined && (loginAccount.get.isAdmin || repository.managers.contains(loginAccount.get.userName))){
         @sidemenu("/settings", "settings", "Settings")
       }

@@ -47,6 +47,8 @@ abstract class ControllerBase extends ScalatraFilter
         // Redirect to dashboard
         httpResponse.sendRedirect(baseUrl + "/")
       }
+    } else if(path.startsWith("/chat/")){
+      chain.doFilter(request, response)
     } else if(path.startsWith("/git/")){
       // Git repository
       chain.doFilter(request, response)

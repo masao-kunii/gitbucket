@@ -4,6 +4,7 @@ import app._
 import org.scalatra._
 import javax.servlet._
 import java.util.EnumSet
+import servlet._
 
 class ScalatraBootstrap extends LifeCycle {
   override def init(context: ServletContext) {
@@ -29,6 +30,7 @@ class ScalatraBootstrap extends LifeCycle {
     context.mount(new IssuesController, "/*")
     context.mount(new PullRequestsController, "/*")
     context.mount(new RepositorySettingsController, "/*")
+    context.mount(new ChatController, "/*")
 
     // Create GITBUCKET_HOME directory if it does not exist
     val dir = new java.io.File(_root_.util.Directory.GitBucketHome)
