@@ -1,0 +1,165 @@
+/* Styles you shouldn't keep as they are for displaying this base example only */
+.span10 {
+    position: relative;
+    min-height: 500px;
+    width: 700px;
+}
+.span4 {
+    position: relative;
+    min-height: 500px;
+    width: 50px;
+    padding-left: 9px;
+    margin-left: 10px;
+    border-left: 1px solid #eee;
+}
+
+#onError {
+    display: none;
+}
+
+#onChat {
+    display: block;
+}
+
+#messages {
+	height: 90%;
+    width: 100%;
+	overflow-y: scroll;
+    position: absolute;
+    bottom: 60px;
+}
+
+#talk {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 40px
+}
+
+/*
+.message {
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+*/
+/*******************************
+* messages
+********************************/
+.message {
+    width: 100%;
+	position: relative;
+    background: #fff;
+    border: 1px solid #777;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    margin-right: 20%;
+    clear: both;
+    max-width: 500px;
+    float: left;
+}
+.message:after,
+.message:before {
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+.message:after {
+    border-color: rgba(255, 255, 255, 0);
+    border-right-color: #fff;
+    border-width: 7px;
+    margin-top: -7px;
+}
+.message:before {
+    border-color: rgba(0, 0, 0, 0);
+    border-right-color: #000;
+    border-width: 8px;
+    margin-top: -8px;
+}
+
+/*******************************
+* �E����̐����o��
+********************************/
+.message.me {
+    width: 100%;
+	position: relative;
+    background: #85e249;
+    border: 1px solid #777;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    margin-left: 20%;
+    clear: both;
+    max-width: 500px;
+    float: right;
+}
+.message.me:after,
+.message.me:before {
+    left: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+.message.me:after {
+    border-color: rgba(133, 226, 73, 0);
+    border-left-color: #85e249;
+    border-width: 7px;
+    margin-top: -7px;
+}
+.message.me:before {
+    border-color: rgba(119, 119, 119, 0);
+    border-left-color: #777;
+    border-width: 8px;
+    margin-top: -8px;
+}
+
+/*******************************
+* ���荞�݂�����
+********************************/
+.clear_balloon{
+  clear: both;
+}
+
+/*
+.message span {
+    width: 70px;
+    overflow: hidden;
+    text-align: right;
+    font-weight: bold;
+    margin-right: 5px;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    top: -1px;
+}
+*/
+/*
+.message p {
+    display: inline-block;
+    margin: 0;
+    width: 500px;
+}
+*/
+
+/*
+.message.me {
+    background: #FFC;
+}
+*/
+/*
+.message.join, .message.quit {
+    background: #D9E7FB;
+}
+*/

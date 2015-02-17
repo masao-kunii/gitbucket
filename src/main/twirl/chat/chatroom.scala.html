@@ -1,0 +1,149 @@
+@(collaborators: List[String],
+  milestones: List[model.Milestone],
+  labels: List[model.Label],
+  hasWritePermission: Boolean,
+  repository: service.RepositoryService.RepositoryInfo,
+  logs: Seq[app.Message])(implicit context: app.Context)
+@import context._
+@import view.helpers._
+@html.main(s"Chatroom - ${repository.owner}/${repository.name}", Some(repository)){
+  @html.menu("chat", repository){
+
+<div class="status">
+</div>
+    <div id="onError" class="alert-message error">
+        <p>
+            <strong>Oops!</strong> <span></span>
+        </p>
+    </div>
+    
+    <div id="onChat" class="row">
+        <div class="span10" id="main">
+            <div id="messages">
+            @for(l <- logs){
+                <div class="message @l.kind"><span>@l.user</span><small> at @l.timestamp</small><p>@l.text</p></div>
+            }
+            
+            </div>
+            <textarea id="talk"></textarea>
+        </div>
+        <div class="span4">
+            <h2>Members</h2>
+            <ul id="members">
+            </ul>
+        </div>
+    </div>
+<script>
+var isOldTitle = true;
+var oldTitle = document.title;
+var newTitle = "newTitle";
+var changeTitleInterval = null;
+function changeTitle() {
+    document.title = isOldTitle ? oldTitle : newTitle;
+    isOldTitle = !isOldTitle;
+}
+
+
+$(function() {
+
+    var ws = new WebSocket("@context.baseUrl.replace("http","ws")/chat/talk)");
+
+    ws.onopen = function(ev) {
+        $('#status').append(" Open");
+        var msg = {
+          user: "@loginAccount.get.userName",
+          text: "has joined",
+          chatroom: "@{repository.owner}_@repository.name",
+          kind: "login"
+        }
+        ws.send(JSON.stringify(msg))
+    }
+    ws.onmessage = function(ev) {
+        $('#status').append(" onMessage");
+       var data = JSON.parse(ev.data)
+
+      // Handle errors
+        if(data.error) {
+            ws.close()
+            $("#onError span").text(data.error)
+            $("#onError").show()
+            return
+        } else {
+            $("#onChat").show()
+        }
+
+        // Create the message element
+        var el = $('<div class="message"><span></span><small></small><p></p></div>')
+        $("span", el).text(data.user)
+        $("p", el).text(data.text)
+        $("small", el).text(" at " + data.timestamp)
+        $(el).addClass(data.kind)
+        if(data.user == '@loginAccount.get.userName') $(el).addClass('me')
+        $('#messages').append(el)
+
+        //scroll to the bottom
+        $("#messages").scrollTop($('#messages')[0].scrollHeight)
+        //show the message in the title
+        newTitle = data.text;
+        clearInterval(changeTitleInterval);
+        changeTitleInterval = setInterval(changeTitle, 700);
+
+        // Update the members list
+        $("#members").html('')
+        $(data.members).each(function() {
+            var li = document.createElement('li');
+            li.textContent = this;
+            $("#members").append(li);
+        })
+    };
+
+    //On close
+    ws.onclose = function(evt) {
+        $('#status').append(" Closed");
+    };
+
+    //On window unload
+    $(window).unload(function(){
+        ws.close();
+    });
+
+    //On enter key press
+    var sendMessage = function() {
+        var msg = {
+          user: "@loginAccount.get.userName",
+          text: $("#talk").val(),
+          chatroom: "@{repository.owner}_@repository.name",
+          kind: "talk"
+        }
+        ws.send(JSON.stringify(msg))
+        $("#talk").val('')
+    }
+    var handleReturnKey = function(e) {
+        if(e.charCode == 13 || e.keyCode == 13) {
+            e.preventDefault()
+            sendMessage()
+        }
+    }
+    $("#talk").keypress(handleReturnKey)
+
+    //On window click
+    $(document).on("click", function(){
+     clearInterval(changeTitleInterval);
+     $("title").text(oldTitle);
+    });
+});
+
+</script>
+
+<script>
+window.onload=function(){
+var css=document.createElement("link");
+css.setAttribute("rel","stylesheet");
+css.setAttribute("type","text/css");
+css.setAttribute("href","@assets/common/css/chatroom.css");
+$("head").append(css);
+}
+</script>
+  }
+}
+
