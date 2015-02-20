@@ -1,6 +1,7 @@
 package app
 
 import jp.sf.amateras.scalatra.forms._
+import org.slf4j.LoggerFactory
 
 import service._
 import IssuesService._
@@ -38,6 +39,8 @@ trait ChatControllerBase extends ControllerBase {
   self: RepositoryService with AccountService with LabelsService with MilestonesService with ActivityService
     with ReadableUsersAuthenticator with ReferrerAuthenticator with CollaboratorsAuthenticator =>
 
+  private val logger = LoggerFactory.getLogger(classOf[ChatController])
+
   case class ChatForm(content: String)
   val chatForm = mapping(
     "content" -> trim(label("Comment", text(required)))
@@ -46,10 +49,19 @@ trait ChatControllerBase extends ControllerBase {
   get("/:owner/:repository/chatroom")(readableUsersOnly { repository =>
     val dir = new File(_root_.util.Directory.GitBucketHome + "/chat")
     val log = new File(s"${dir.getAbsolutePath}/${repository.owner}_${repository.name}.log")
+    val versionFile = new File(s"${dir.getAbsolutePath}/version")
+
     if(!dir.exists){
       dir.mkdirs()
-      FileUtils.touch(log)
     }
+    if (!versionFile.exists()){
+      logger.info("No version file for chat. Delete old logs if exist.")
+      for(f <- dir.listFiles()) { f.delete()}
+    }
+
+    FileUtils.touch(versionFile)
+    FileUtils.writeStringToFile(versionFile, "2.8.0", "UTF-8", false)
+    FileUtils.touch(log)
 
     implicit val jsonFormats: Formats = DefaultFormats
     val chatLog:Seq[String] = FileUtils.readLines(log, "UTF-8")

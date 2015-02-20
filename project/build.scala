@@ -55,7 +55,9 @@ object MyBuild extends Build {
       "junit" % "junit" % "4.11" % "test",
       "com.mchange" % "c3p0" % "0.9.5",
       "com.typesafe" % "config" % "1.2.1",
-      "com.typesafe.play" %% "twirl-compiler" % "1.0.2"
+      "com.typesafe.play" %% "twirl-compiler" % "1.0.2",
+      "com.typesafe.akka" %% "akka-actor" % "2.3.9",
+      "com.typesafe.akka" %% "akka-testkit" % "2.3.9"
     ),
     EclipseKeys.withSource := true,
     javacOptions in compile ++= Seq("-target", "7", "-source", "7"),

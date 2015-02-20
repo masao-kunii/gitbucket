@@ -46,7 +46,7 @@ function changeTitle() {
 
 $(function() {
 
-    var ws = new WebSocket("@context.baseUrl.replace("http","ws")/chat/talk)");
+    var ws = new WebSocket("@context.baseUrl.replace("http","ws")/chat/@{repository.owner}_@{repository.name}");
 
     ws.onopen = function(ev) {
         $('#status').append(" Open");
